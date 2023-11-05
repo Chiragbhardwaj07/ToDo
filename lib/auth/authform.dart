@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class AuthForm extends StatefulWidget {
   @override
@@ -40,7 +41,6 @@ class _AuthFormState extends State<AuthForm> {
         });
       }
     } on FirebaseAuthException catch (e) {
-      final message = e.message ?? 'An error occurred';
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Center(child: Text('Invalid Credentials')),
         backgroundColor: const Color.fromARGB(255, 250, 94, 82),
@@ -59,8 +59,16 @@ class _AuthFormState extends State<AuthForm> {
           child: Column(
             children: <Widget>[
               Container(
-                height: 200,
-                // child: Image.asset('assets/todo.png'),
+                height: 150,
+                child: Text(
+                  isLoginPage
+                      ? 'Welcome back\nYou\'ve been missed!'
+                      : 'Register',
+                  style: GoogleFonts.abel(
+                    color: Colors.grey[700],
+                    fontSize: 36,
+                  ),
+                ),
               ),
               Form(
                 key: _formKey,

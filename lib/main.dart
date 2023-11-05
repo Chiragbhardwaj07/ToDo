@@ -4,6 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:to_do/auth/authscreen.dart';
 import 'package:to_do/firebase_options.dart';
 import 'package:to_do/homepage.dart';
+import 'package:to_do/pages/landing_page.dart';
+import 'package:to_do/pages/new_task.dart';
+import 'package:to_do/themes/dark_theme.dart';
+import 'package:to_do/themes/light_theme.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,10 +28,13 @@ Future<void> main() async {
         }
       },
     ),
-    // initialRoute: '/home',
+    theme: lightTheme,
+    darkTheme: darkTheme,
     debugShowCheckedModeBanner: false,
     routes: {
-      '/home': (context) => AuthScreen(),
+      '/home': (context) => Home_page(),
+      '/auth': (context) => AuthScreen(),
+      '/newtask': (context) => New_Task(),
     },
   ));
 }
