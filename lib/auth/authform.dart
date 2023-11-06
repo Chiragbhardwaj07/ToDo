@@ -65,7 +65,7 @@ class _AuthFormState extends State<AuthForm> {
                       ? 'Welcome back\nYou\'ve been missed!'
                       : 'Register',
                   style: GoogleFonts.abel(
-                    color: Colors.grey[700],
+                    color: Colors.grey[500],
                     fontSize: 36,
                   ),
                 ),

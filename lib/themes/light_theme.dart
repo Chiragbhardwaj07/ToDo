@@ -10,7 +10,7 @@ ThemeData lightTheme = ThemeData(
   ),
   colorScheme: ColorScheme.light(
     background: Colors.white,
-    primary: Color(0xFFDB3022),
+    primary: Colors.deepPurple,
     secondary: Colors.black,
   ),
 );

@@ -15,12 +15,21 @@ class Home_page extends StatefulWidget {
 class _Home_pageState extends State<Home_page> {
   String uid = '';
   bool isUidAvailable = false;
+  bool taskDone = false;
+  CollectionReference tasksCollection =
+      FirebaseFirestore.instance.collection('tasks');
   @override
   void initState() {
     super.initState();
     getUid();
 
     _resetSelectedDate();
+  }
+
+  void _handleTodoChange(String uid) {
+    setState(() {
+      taskDone = !taskDone;
+    });
   }
 
   Future<void> getUid() async {
@@ -100,11 +109,7 @@ class _Home_pageState extends State<Home_page> {
             ),
           ),
           StreamBuilder<QuerySnapshot>(
-            stream: FirebaseFirestore.instance
-                .collection('tasks')
-                .doc(uid)
-                .collection('mytasks')
-                .snapshots(),
+            stream: tasksCollection.doc(uid).collection('mytasks').snapshots(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return Center(
@@ -120,7 +125,7 @@ class _Home_pageState extends State<Home_page> {
                       var time =
                           (docs?[index]['timestamp'] as Timestamp).toDate();
 
-                      return InkWell(
+                      return ListTile(
                         onTap: () {
                           Navigator.push(
                             context,
@@ -132,56 +137,39 @@ class _Home_pageState extends State<Home_page> {
                             ),
                           );
                         },
-                        child: Container(
-                          margin: EdgeInsets.only(bottom: 10),
-                          decoration: BoxDecoration(
-                            color: Color(0xff121211),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          height: 90,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Container(
-                                    margin: EdgeInsets.only(left: 20),
-                                    child: Text(
-                                      docs?[index]['title'],
-                                      style: GoogleFonts.roboto(fontSize: 20),
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: 5,
-                                  ),
-                                  Container(
-                                    margin: EdgeInsets.only(left: 20),
-                                    // child: Text(
-                                    //     // DateFormat.yMd().add_jm().format(time)
-                                    //     ),
-                                  ),
-                                ],
-                              ),
-                              Container(
-                                child: IconButton(
-                                  icon: Icon(
-                                    Icons.delete,
-                                  ),
-                                  onPressed: () async {
-                                    await FirebaseFirestore.instance
-                                        .collection('tasks')
-                                        .doc(uid)
-                                        .collection('mytasks')
-                                        .doc(docs?[index]['time'])
-                                        .delete();
-                                  },
-                                ),
-                              ),
-                            ],
-                          ),
+                        title: Text(
+                          docs?[index]['title'],
+                          style: GoogleFonts.poppins(
+                              fontSize: 20,
+                              decoration:
+                                  taskDone ? TextDecoration.lineThrough : null),
                         ),
+                        subtitle: Text(
+                          docs?[index]['description'],
+                          style: GoogleFonts.roboto(fontSize: 5),
+                        ),
+                        leading: IconButton(
+                            onPressed: () {
+                              _handleTodoChange(uid);
+                            },
+                            icon: Icon(
+                              taskDone
+                                  ? Icons.check_box
+                                  : Icons.check_box_outline_blank,
+                              color: Theme.of(context).colorScheme.secondary,
+                            )),
+                        trailing: IconButton(
+                            onPressed: () async {
+                              await tasksCollection
+                                  .doc(uid)
+                                  .collection('mytasks')
+                                  .doc(docs?[index]['time'])
+                                  .delete();
+                            },
+                            icon: Icon(
+                              Icons.delete,
+                              color: Theme.of(context).colorScheme.secondary,
+                            )),
                       );
                     },
                   ),
