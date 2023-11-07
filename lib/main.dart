@@ -18,13 +18,13 @@ Future<void> main() async {
     print('Firebase initialization error: $e');
   }
   runApp(MaterialApp(
-    home: StreamBuilder(
+    home: StreamBuilder<User?>(
       stream: FirebaseAuth.instance.authStateChanges(),
       builder: (context, userSnapshot) {
         if (userSnapshot.hasData) {
           return Home_page();
         } else {
-          return AuthScreen();
+          return Landing_Page();
         }
       },
     ),

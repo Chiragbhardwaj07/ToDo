@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:to_do/auth/authscreen.dart';
 
 class GradientText extends StatelessWidget {
   const GradientText(
@@ -81,7 +82,11 @@ class Landing_Page extends StatelessWidget {
                       height: 50,
                       child: ElevatedButton(
                         onPressed: () {
-                          Navigator.popAndPushNamed(context, '/auth');
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => AuthScreen()),
+                          );
                         },
                         child: Text('Get started'),
                         style: ElevatedButton.styleFrom(

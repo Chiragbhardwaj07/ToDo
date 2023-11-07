@@ -27,7 +27,7 @@ class _New_TaskState extends State<New_Task> {
       User? user = FirebaseAuth.instance.currentUser;
       if (user != null) {
         String uid = user.uid;
-        Timestamp time = Timestamp.now();
+        var time = DateTime.now();
         CollectionReference tasksCollection =
             FirebaseFirestore.instance.collection('tasks');
 
@@ -38,7 +38,7 @@ class _New_TaskState extends State<New_Task> {
             .set({
           'title': titleController.text,
           'description': descriptionController.text,
-          'time': time.toDate(),
+          'time': time.toString(),
         });
         titleController.clear();
         descriptionController.clear();

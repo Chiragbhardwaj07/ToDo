@@ -116,14 +116,14 @@ class _Home_pageState extends State<Home_page> {
                   child: CircularProgressIndicator(),
                 );
               } else {
-                final docs = snapshot.data?.docs;
+                final docs = snapshot.data!.docs;
 
                 return Expanded(
                   child: ListView.builder(
-                    itemCount: docs?.length,
+                    itemCount: docs.length,
                     itemBuilder: (context, index) {
-                      var time =
-                          (docs?[index]['timestamp'] as Timestamp).toDate();
+                      // var time =
+                      //     (docs?[index]['timestamp'] as Timestamp).toDate();
 
                       return ListTile(
                         onTap: () {
@@ -146,7 +146,7 @@ class _Home_pageState extends State<Home_page> {
                         ),
                         subtitle: Text(
                           docs?[index]['description'],
-                          style: GoogleFonts.roboto(fontSize: 5),
+                          style: GoogleFonts.roboto(fontSize: 10),
                         ),
                         leading: IconButton(
                             onPressed: () {
@@ -159,8 +159,8 @@ class _Home_pageState extends State<Home_page> {
                               color: Theme.of(context).colorScheme.secondary,
                             )),
                         trailing: IconButton(
-                            onPressed: () async {
-                              await tasksCollection
+                            onPressed: () {
+                              tasksCollection
                                   .doc(uid)
                                   .collection('mytasks')
                                   .doc(docs?[index]['time'])

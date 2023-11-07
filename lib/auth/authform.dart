@@ -17,11 +17,12 @@ class _AuthFormState extends State<AuthForm> {
   String _username = '';
   bool isLoginPage = false;
 
-  void startAuthentication() async {
+  void startAuthentication() {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
       submitForm(_email, _password, _username);
     }
+    Navigator.pop(context);
   }
 
   void submitForm(String email, String password, String username) async {
@@ -43,7 +44,7 @@ class _AuthFormState extends State<AuthForm> {
     } on FirebaseAuthException catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Center(child: Text('Invalid Credentials')),
-        backgroundColor: const Color.fromARGB(255, 250, 94, 82),
+        backgroundColor: Color.fromARGB(255, 250, 94, 82),
       ));
     } catch (e) {
       print(e);
@@ -162,6 +163,65 @@ class _AuthFormState extends State<AuthForm> {
                       child: Text(
                           isLoginPage ? 'Not a member?' : 'Already a Member?'),
                     ),
+                    const SizedBox(height: 30),
+
+                    // or continue with
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Divider(
+                              thickness: 0.5,
+                              color: Colors.grey[400],
+                            ),
+                          ),
+                          Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 10.0),
+                            child: Text(
+                              'Or continue with',
+                              style: TextStyle(color: Colors.grey[700]),
+                            ),
+                          ),
+                          Expanded(
+                            child: Divider(
+                              thickness: 0.5,
+                              color: Colors.grey[400],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          height: 69,
+                          width: 69,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(30),
+                              image: DecorationImage(
+                                  fit: BoxFit.contain,
+                                  image: AssetImage('assets/google.svg'))),
+                        ),
+                        SizedBox(
+                          width: 40,
+                        ),
+                        Container(
+                          height: 69,
+                          width: 69,
+                          decoration: BoxDecoration(
+                              // color: Colors.white,
+                              image: DecorationImage(
+                                  image: AssetImage('assets/Apple.svg'))),
+                        ),
+                      ],
+                    )
                   ],
                 ),
               ),
