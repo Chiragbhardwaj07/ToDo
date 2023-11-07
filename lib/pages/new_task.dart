@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 
 class New_Task extends StatefulWidget {
   const New_Task({super.key});
@@ -28,6 +29,8 @@ class _New_TaskState extends State<New_Task> {
       if (user != null) {
         String uid = user.uid;
         var time = DateTime.now();
+        var hr = DateFormat.jms();
+
         CollectionReference tasksCollection =
             FirebaseFirestore.instance.collection('tasks');
 
@@ -39,6 +42,7 @@ class _New_TaskState extends State<New_Task> {
           'title': titleController.text,
           'description': descriptionController.text,
           'time': time.toString(),
+          "completed": false,
         });
         titleController.clear();
         descriptionController.clear();

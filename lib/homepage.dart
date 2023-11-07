@@ -13,23 +13,28 @@ class Home_page extends StatefulWidget {
 }
 
 class _Home_pageState extends State<Home_page> {
+  List<DocumentSnapshot> docs = [];
   String uid = '';
   bool isUidAvailable = false;
-  bool taskDone = false;
+
+  List<bool> taskDoneList = [];
   CollectionReference tasksCollection =
       FirebaseFirestore.instance.collection('tasks');
   @override
   void initState() {
     super.initState();
     getUid();
+    // Initialize with 'false' for each task
 
     _resetSelectedDate();
   }
 
-  void _handleTodoChange(String uid) {
-    setState(() {
-      taskDone = !taskDone;
-    });
+  void _handleTodoChange(String taskId, bool taskDone) {
+    tasksCollection
+        .doc(uid)
+        .collection('mytasks')
+        .doc(taskId)
+        .update({'completed': !taskDone});
   }
 
   Future<void> getUid() async {
@@ -86,6 +91,7 @@ class _Home_pageState extends State<Home_page> {
         ],
       ),
       body: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
           CalendarTimeline(
             initialDate: _selectedDate,
@@ -102,11 +108,10 @@ class _Home_pageState extends State<Home_page> {
             // locale: 'en',
           ),
           const SizedBox(height: 20),
-          Center(
-            child: Text(
-              'Selected date is $_selectedDate',
-              style: TextStyle(color: Theme.of(context).colorScheme.secondary),
-            ),
+          Text(
+            'Tasks',
+            style: GoogleFonts.poppins(
+                color: Theme.of(context).colorScheme.secondary, fontSize: 30),
           ),
           StreamBuilder<QuerySnapshot>(
             stream: tasksCollection.doc(uid).collection('mytasks').snapshots(),
@@ -117,11 +122,15 @@ class _Home_pageState extends State<Home_page> {
                 );
               } else {
                 final docs = snapshot.data!.docs;
+                if (taskDoneList.isEmpty) {
+                  taskDoneList = List.generate(docs.length, (index) => false);
+                }
 
                 return Expanded(
                   child: ListView.builder(
                     itemCount: docs.length,
                     itemBuilder: (context, index) {
+                      bool taskDone = docs[index]['completed'] ?? false;
                       // var time =
                       //     (docs?[index]['timestamp'] as Timestamp).toDate();
 
@@ -146,11 +155,11 @@ class _Home_pageState extends State<Home_page> {
                         ),
                         subtitle: Text(
                           docs?[index]['description'],
-                          style: GoogleFonts.roboto(fontSize: 10),
+                          style: GoogleFonts.roboto(),
                         ),
                         leading: IconButton(
                             onPressed: () {
-                              _handleTodoChange(uid);
+                              _handleTodoChange(docs[index].id, taskDone);
                             },
                             icon: Icon(
                               taskDone

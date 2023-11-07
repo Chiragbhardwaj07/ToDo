@@ -20,8 +20,8 @@ Future<void> main() async {
   runApp(MaterialApp(
     home: StreamBuilder<User?>(
       stream: FirebaseAuth.instance.authStateChanges(),
-      builder: (context, userSnapshot) {
-        if (userSnapshot.hasData) {
+      builder: (context, Snapshot) {
+        if (Snapshot.hasData) {
           return Home_page();
         } else {
           return Landing_Page();

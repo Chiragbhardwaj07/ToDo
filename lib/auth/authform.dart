@@ -173,7 +173,7 @@ class _AuthFormState extends State<AuthForm> {
                           Expanded(
                             child: Divider(
                               thickness: 0.5,
-                              color: Colors.grey[400],
+                              color: Colors.grey[500],
                             ),
                           ),
                           Padding(
@@ -187,7 +187,7 @@ class _AuthFormState extends State<AuthForm> {
                           Expanded(
                             child: Divider(
                               thickness: 0.5,
-                              color: Colors.grey[400],
+                              color: Colors.grey[500],
                             ),
                           ),
                         ],
@@ -201,8 +201,8 @@ class _AuthFormState extends State<AuthForm> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Container(
-                          height: 69,
-                          width: 69,
+                          height: 59,
+                          width: 50,
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(30),
                               image: DecorationImage(
@@ -210,15 +210,15 @@ class _AuthFormState extends State<AuthForm> {
                                   image: AssetImage('assets/google.svg'))),
                         ),
                         SizedBox(
-                          width: 40,
+                          width: 50,
                         ),
                         Container(
-                          height: 69,
-                          width: 69,
+                          height: 50,
+                          width: 50,
                           decoration: BoxDecoration(
                               // color: Colors.white,
                               image: DecorationImage(
-                                  image: AssetImage('assets/Apple.svg'))),
+                                  image: AssetImage('assets/apple.png'))),
                         ),
                       ],
                     )
