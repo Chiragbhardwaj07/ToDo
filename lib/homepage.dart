@@ -3,7 +3,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:calendar_timeline/calendar_timeline.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:to_do/pages/description.dart';
+import 'package:to_do/themes/theme_provider.dart';
 
 class Home_page extends StatefulWidget {
   const Home_page({super.key});
@@ -68,6 +70,7 @@ class _Home_pageState extends State<Home_page> {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
     if (!isUidAvailable) {
       // Handle the case where uid is not available yet
       print('UID absent');
@@ -87,7 +90,18 @@ class _Home_pageState extends State<Home_page> {
           IconButton(
               onPressed: signOut,
               icon: Icon(Icons.logout),
-              color: Theme.of(context).colorScheme.secondary)
+              color: Theme.of(context).colorScheme.secondary),
+          IconButton(
+            icon: Icon(
+              themeProvider.selectedTheme == ThemeMode.light
+                  ? Icons.dark_mode // Light bulb icon when light theme
+                  : Icons.light_mode,
+            ),
+            color: Theme.of(context).colorScheme.secondary,
+            onPressed: () {
+              themeProvider.toggleTheme(); // Toggle the theme
+            },
+          ),
         ],
       ),
       body: Column(
@@ -125,15 +139,18 @@ class _Home_pageState extends State<Home_page> {
                 if (taskDoneList.isEmpty) {
                   taskDoneList = List.generate(docs.length, (index) => false);
                 }
+                final selectedDateTasks = docs.where((doc) {
+                  final taskDate = (doc['timestamp'] as Timestamp).toDate();
+                  return taskDate.year == _selectedDate.year &&
+                      taskDate.month == _selectedDate.month &&
+                      taskDate.day == _selectedDate.day;
+                }).toList();
 
                 return Expanded(
                   child: ListView.builder(
-                    itemCount: docs.length,
+                    itemCount: selectedDateTasks.length,
                     itemBuilder: (context, index) {
                       bool taskDone = docs[index]['completed'] ?? false;
-                      // var time =
-                      //     (docs?[index]['timestamp'] as Timestamp).toDate();
-
                       return ListTile(
                         onTap: () {
                           Navigator.push(

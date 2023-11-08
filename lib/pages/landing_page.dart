@@ -60,7 +60,7 @@ class Landing_Page extends StatelessWidget {
                     Text(
                       'Organize every job for better productivity!',
                       style: GoogleFonts.roboto(
-                          color: Colors.black,
+                          color: Colors.grey[700],
                           fontSize: 30,
                           fontWeight: FontWeight.w600),
                     ),
@@ -70,7 +70,7 @@ class Landing_Page extends StatelessWidget {
                     Text(
                       'We make every task for you and \nyour team easy to manage with cool \nfeatures and interactive interface',
                       style: GoogleFonts.abel(
-                        color: Colors.grey,
+                        color: Colors.grey[500],
                         fontSize: 18,
                       ),
                     ),

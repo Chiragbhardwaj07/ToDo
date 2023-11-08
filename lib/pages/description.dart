@@ -10,24 +10,44 @@ class Description extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Description')),
+      appBar: AppBar(
+        title: Text(
+          'Description',
+          style: GoogleFonts.poppins(
+              color: Theme.of(context).colorScheme.secondary),
+        ),
+        iconTheme:
+            IconThemeData(color: Theme.of(context).colorScheme.secondary),
+        actions: [IconButton(onPressed: () {}, icon: Icon(Icons.edit))],
+      ),
       body: Container(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              margin: EdgeInsets.all(10),
+              margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
               child: Text(
                 title,
-                style: GoogleFonts.roboto(
-                    fontSize: 24, fontWeight: FontWeight.bold),
+                style: GoogleFonts.poppins(
+                    fontSize: 30, fontWeight: FontWeight.bold),
               ),
             ),
-            Container(
-              margin: EdgeInsets.all(10),
-              child: Text(
-                description,
-                style: GoogleFonts.roboto(fontSize: 18),
+            Expanded(
+              child: Container(
+                width: double.infinity,
+                margin: EdgeInsets.all(10),
+                child: Card(
+                  elevation: 5,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16)),
+                  child: Padding(
+                    padding: const EdgeInsets.all(15.0),
+                    child: Text(
+                      description,
+                      style: GoogleFonts.poppins(fontSize: 18),
+                    ),
+                  ),
+                ),
               ),
             ),
           ],

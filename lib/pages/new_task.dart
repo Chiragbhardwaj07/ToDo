@@ -41,12 +41,13 @@ class _New_TaskState extends State<New_Task> {
             .set({
           'title': titleController.text,
           'description': descriptionController.text,
-          'time': time.toString(),
           "completed": false,
+          "timestamp": Timestamp.fromDate(DateTime.now()),
         });
         titleController.clear();
         descriptionController.clear();
         removeKeyboardFocus(context);
+        Navigator.pop(context);
 
         // print('Data Added');
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
