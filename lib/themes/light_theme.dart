@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 ThemeData lightTheme = ThemeData(
   brightness: Brightness.light,
   appBarTheme: AppBarTheme(
+    iconTheme: IconThemeData(color: Colors.black),
     backgroundColor: Colors.white,
     elevation: 0,
   ),

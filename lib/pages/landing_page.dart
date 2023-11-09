@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:to_do/auth/authscreen.dart';
+import 'package:to_do/pages/loading_page.dart';
 
 class GradientText extends StatelessWidget {
   const GradientText(

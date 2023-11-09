@@ -1,12 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:to_do/pages/edit_task.dart';
 
-class Description extends StatelessWidget {
+class Description extends StatefulWidget {
   final String title, description;
+  final String? taskId;
 
   const Description(
-      {super.key, required this.title, required this.description});
+      {super.key,
+      required this.title,
+      required this.description,
+      required this.taskId});
 
+  @override
+  State<Description> createState() => _DescriptionState();
+}
+
+class _DescriptionState extends State<Description> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,7 +28,20 @@ class Description extends StatelessWidget {
         ),
         iconTheme:
             IconThemeData(color: Theme.of(context).colorScheme.secondary),
-        actions: [IconButton(onPressed: () {}, icon: Icon(Icons.edit))],
+        actions: [
+          IconButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => EditTask(
+                          title: widget.title,
+                          description: widget.description,
+                          taskId: widget.taskId)),
+                );
+              },
+              icon: Icon(Icons.edit))
+        ],
       ),
       body: Container(
         child: Column(
@@ -27,7 +50,7 @@ class Description extends StatelessWidget {
             Container(
               margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
               child: Text(
-                title,
+                widget.title,
                 style: GoogleFonts.poppins(
                     fontSize: 30, fontWeight: FontWeight.bold),
               ),
@@ -43,7 +66,7 @@ class Description extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.all(15.0),
                     child: Text(
-                      description,
+                      widget.description,
                       style: GoogleFonts.poppins(fontSize: 18),
                     ),
                   ),

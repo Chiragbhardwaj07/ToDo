@@ -42,6 +42,7 @@ class _New_TaskState extends State<New_Task> {
           'title': titleController.text,
           'description': descriptionController.text,
           "completed": false,
+          'time': time.toString(),
           "timestamp": Timestamp.fromDate(DateTime.now()),
         });
         titleController.clear();

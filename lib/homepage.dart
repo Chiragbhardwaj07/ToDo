@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:calendar_timeline/calendar_timeline.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:to_do/drawer.dart';
 import 'package:to_do/pages/description.dart';
 import 'package:to_do/themes/theme_provider.dart';
 
@@ -59,15 +60,6 @@ class _Home_pageState extends State<Home_page> {
     _selectedDate = DateTime.now();
   }
 
-  void signOut() async {
-    try {
-      await FirebaseAuth.instance.signOut();
-      print("User signed out");
-    } catch (e) {
-      print("Error signing out: $e");
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
@@ -86,11 +78,9 @@ class _Home_pageState extends State<Home_page> {
           style: TextStyle(color: Theme.of(context).colorScheme.secondary),
         ),
         centerTitle: true,
+        iconTheme: IconThemeData(
+            color: Theme.of(context).colorScheme.secondary), // Add this line
         actions: [
-          IconButton(
-              onPressed: signOut,
-              icon: Icon(Icons.logout),
-              color: Theme.of(context).colorScheme.secondary),
           IconButton(
             icon: Icon(
               themeProvider.selectedTheme == ThemeMode.light
@@ -104,6 +94,7 @@ class _Home_pageState extends State<Home_page> {
           ),
         ],
       ),
+      drawer: NavBar(),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
@@ -157,6 +148,7 @@ class _Home_pageState extends State<Home_page> {
                             context,
                             MaterialPageRoute(
                               builder: (context) => Description(
+                                taskId: docs[index].id,
                                 title: docs?[index]['title'],
                                 description: docs?[index]['description'],
                               ),
@@ -186,11 +178,21 @@ class _Home_pageState extends State<Home_page> {
                             )),
                         trailing: IconButton(
                             onPressed: () {
-                              tasksCollection
-                                  .doc(uid)
-                                  .collection('mytasks')
-                                  .doc(docs?[index]['time'])
-                                  .delete();
+                              final taskId = docs?[index]['time'];
+                              if (taskId != null) {
+                                tasksCollection
+                                    .doc(uid)
+                                    .collection('mytasks')
+                                    .doc(taskId)
+                                    .delete()
+                                    .then((value) {
+                                  print("Task deleted successfully");
+                                }).catchError((error) {
+                                  print("Error deleting task: $error");
+                                });
+                              } else {
+                                print("Task ID is null");
+                              }
                             },
                             icon: Icon(
                               Icons.delete,
